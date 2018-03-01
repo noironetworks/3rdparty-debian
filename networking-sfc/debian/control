@@ -1,0 +1,14 @@
+Source: networking-sfc
+Section: python
+Priority: optional
+Maintainer: Cisco Systems, Inc. <openstack-networking@cisco.com>
+Build-Depends: debhelper (>= 9), python-setuptools (>= 3.3), python-all (>= 2.7)
+Standards-Version: 3.9.5
+Homepage: https://github.com/noironetworks/networking-sfc
+Vcs-Browser: https://github.com/noironetworks/networking-sfc
+
+Package: networking-sfc
+Architecture: all
+Depends: ${misc:Depends}, neutron-lib
+Description: Neutron service function chaining
+ Provides service function chaining support for neutron

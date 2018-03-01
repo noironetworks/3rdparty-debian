@@ -1,0 +1,5 @@
+networking-sfc (@VERSION@-@REVISION@) trusty; urgency=low
+
+  * [Placeholder]
+
+ -- Thomas Bachman <bachman@noironetworks.com>  Thu,  1 Mar 2018 22:53:44 +0000
