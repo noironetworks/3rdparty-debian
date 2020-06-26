@@ -3,16 +3,16 @@ Section: python
 Priority: optional
 Maintainer: Cisco Systems, Inc. <apicapi@noironetworks.com>
 Build-Depends: debhelper (>= 9), python-setuptools (>= 3.3), python-all (>= 2.7),
-               python3-setuptools, python3-all
+               python-setuptools
 Standards-Version: 3.9.5
 Homepage: https://github.com/datacenter/acitoolkit
 Vcs-Browser: https://github.com/datacenter/acitoolkit
 Vcs-Git: git://github.com/datacenter/acitoolkit.git
 
-Package: acitoolkit
+Package: python-acitoolkit
 Architecture: all
 Depends: ${misc:Depends}, python-requests, python-websocket, python-tabulate,
-         python (>= 2.7), python (<< 2.8), ${python:Depends}, ${python3:Depends}
-Description: Python libraries for configuration of the Cisco APIC controller
+         ${python:Depends}
+Description: Python2.7 libraries for configuration of the Cisco APIC controller
  The ACI Toolkit is a set of python libraries that allow basic configuration of the Cisco APIC controller
 
