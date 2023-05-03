@@ -1,0 +1,62 @@
+Source: openvswitch
+Section: net
+Priority: extra
+Maintainer: Open vSwitch developers <dev@openvswitch.org>
+Uploaders: Ben Pfaff <pfaffben@debian.org>, Simon Horman <horms@debian.org>
+Build-Depends: graphviz,
+               autoconf (>= 2.71),
+               automake (>= 1.16) | automake1.16,
+               bzip2,
+               debhelper (>= 8),
+               dh-autoreconf,
+               dh-python,
+               libssl-dev,
+               libtool,
+               openssl,
+               procps,
+               python3-all,
+               python3-sphinx,
+               python3-twisted,
+               python3-zope.interface
+Standards-Version: 3.9.3
+Homepage: http://openvswitch.org/
+
+Package: libnoiro-openvswitch-dev
+Architecture: linux-any
+Depends:
+ ${misc:Depends}
+Description: Open vSwitch development package
+ Open vSwitch is a production quality, multilayer, software-based, Ethernet
+ virtual switch. It is designed to enable massive network automation through
+ programmatic extension, while still supporting standard management interfaces
+ and protocols (e.g. NetFlow, sFlow, SPAN, RSPAN, CLI, LACP, 802.1ag). In
+ addition, it is designed to support distribution across multiple physical
+ servers similar to VMware's vNetwork distributed vswitch or Cisco's Nexus
+ 1000V.
+ .
+ This package provides openvswitch headers and libopenvswitch for developers.
+
+Package: libnoiro-openvswitch
+Architecture: linux-any
+Depends:
+ ${misc:Depends}
+Description: Noiro Open vSwitch OpenFlow library
+ This provides dynamic libraries for using OpenFlow with OVS
+
+Package: noiro-openvswitch-dbg
+Section: debug
+Architecture: linux-any
+Depends: ${misc:Depends},
+         ${shlibs:Depends}
+Description: Debug symbols for Open vSwitch packages
+ Open vSwitch is a production quality, multilayer, software-based,
+ Ethernet virtual switch. It is designed to enable massive network
+ automation through programmatic extension, while still supporting
+ standard management interfaces and protocols (e.g. NetFlow, IPFIX,
+ sFlow, SPAN, RSPAN, CLI, LACP, 802.1ag). In addition, it is designed
+ to support distribution across multiple physical servers similar to
+ VMware's vNetwork distributed vswitch or Cisco's Nexus 1000V.
+ .
+ This package contains the debug symbols for all the other openvswitch-*
+ packages.  Install it to debug one of them or to examine a core dump
+ produced by one of them.

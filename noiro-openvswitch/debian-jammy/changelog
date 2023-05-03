@@ -1,0 +1,17 @@
+openvswitch (2.17.0-1) jammy; urgency=low
+
+  * Updating noiro package to use ovs 2.17.0
+
+openvswitch (2.12.0-1) focal; urgency=low
+
+  * Updating noiro package to use ovs 2.12.0
+
+openvswitch (2.6.7-1) bionic; urgency=low
+
+  * Updating noiro package to use ovs 2.6.7
+
+openvswitch (2.6.0-2) unstable; urgency=low
+
+  * Noiro openvswitch packages
+
+ -- Rob Adams <readams@readams.net>  Mon, 17 Oct 2016 15:01:55 -0800
