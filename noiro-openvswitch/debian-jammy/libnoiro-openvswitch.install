@@ -1,0 +1,3 @@
+usr/lib/*/libnoiro_openvswitch*.so*
+usr/lib/*/libnoiro_ofproto*.so*
+usr/lib/*/libnoiro_sflow*.so*
