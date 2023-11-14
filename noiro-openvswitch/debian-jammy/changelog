@@ -1,0 +1,4 @@
+openvswitch (2.12.0-1) jammy; urgency=low
+
+  * Updating noiro package to use ovs 2.12.0
+
