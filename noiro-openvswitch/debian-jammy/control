@@ -26,7 +26,6 @@ Homepage: http://openvswitch.org/
 Package: libnoiro-openvswitch-dev
 Architecture: linux-any
 Depends:
- libopenvswitch (>= ${binary:Version}),
  libssl-dev,
  libunbound-dev,
  ${misc:Depends}
