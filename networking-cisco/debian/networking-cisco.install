@@ -1,1 +1,1 @@
-etc/cfg-agent/init/neutron-cisco-topology-agent.conf /etc/init/
+etc/topology-agent/init/neutron-cisco-topology-agent.conf /etc/init/
