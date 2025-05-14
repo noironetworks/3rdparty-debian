@@ -1,0 +1,4 @@
+openvswitch (2.15.0-1) noble; urgency=low
+
+  * Updating noiro package to use ovs 2.15.0
+
