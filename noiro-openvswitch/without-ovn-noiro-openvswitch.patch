@@ -1,0 +1,418 @@
+# index 17b36b4..3152060 100644
+# --- a/lib/automake.mk
+# +++ b/lib/automake.mk
+# @@ -5,7 +5,10 @@
+#  # notice and this notice are preserved.  This file is offered as-is,
+#  # without warranty of any kind.
+
+# -lib_LTLIBRARIES += lib/libopenvswitch.la
+# +noinst_LTLIBRARIES += lib/libopenvswitch.la
+# +lib_LTLIBRARIES += lib/libnoiro_openvswitch.la
+# +lib_libnoiro_openvswitch_la_SOURCES =
+# +lib_libnoiro_openvswitch_la_LIBADD = lib/libopenvswitch.la
+
+#  lib_libopenvswitch_la_LIBADD = $(SSL_LIBS)
+#  lib_libopenvswitch_la_LIBADD += $(CAPNG_LDADD)
+# @@ -15,7 +18,7 @@ if WIN32
+#  lib_libopenvswitch_la_LIBADD += ${PTHREAD_LIBS}
+#  endif
+
+# -lib_libopenvswitch_la_LDFLAGS = \
+# +lib_libnoiro_openvswitch_la_LDFLAGS = \
+#          $(OVS_LTINFO) \
+#          -Wl,--version-script=$(top_builddir)/lib/libopenvswitch.sym \
+#          $(AM_LDFLAGS)
+# @@ -366,8 +369,11 @@ nodist_lib_libopenvswitch_la_SOURCES = \
+#         lib/vswitch-idl.h
+#  CLEANFILES += $(nodist_lib_libopenvswitch_la_SOURCES)
+
+# -lib_LTLIBRARIES += lib/libsflow.la
+# -lib_libsflow_la_LDFLAGS = \
+# +noinst_LTLIBRARIES += lib/libsflow.la
+# +lib_LTLIBRARIES += lib/libnoiro_sflow.la
+# +lib_libnoiro_sflow_la_SOURCES =
+# +lib_libnoiro_sflow_la_LIBADD = lib/libsflow.la
+# +lib_libnoiro_sflow_la_LDFLAGS = \
+#          $(OVS_LTINFO) \
+#          -Wl,--version-script=$(top_builddir)/lib/libsflow.sym \
+#          $(AM_LDFLAGS)
+
+
+# diff --git a/lib/libopenvswitch.pc.in b/lib/libopenvswitch.pc.in
+# index 2a3f2ca..5a0eca4 100644
+# --- a/lib/libopenvswitch.pc.in
+# +++ b/lib/libopenvswitch.pc.in
+# @@ -6,6 +6,6 @@ includedir=@includedir@
+#  Name: libopenvswitch
+#  Description: Open vSwitch library
+#  Version: @VERSION@
+# -Libs: -L${libdir} -lopenvswitch
+# +Libs: -L${libdir} -lnoiro_openvswitch
+#  Libs.private: @LIBS@
+#  Cflags: -I${includedir}/openvswitch
+
+
+# diff --git a/lib/libsflow.pc.in b/lib/libsflow.pc.in
+# index e70a2b7..6f73164 100644
+# --- a/lib/libsflow.pc.in
+# +++ b/lib/libsflow.pc.in
+# @@ -3,9 +3,9 @@ exec_prefix=@exec_prefix@
+#  libdir=@libdir@
+#  includedir=@includedir@
+
+# -Name: libofproto
+# +Name: libsflow
+#  Description: sFlow library of Open vSwitch
+#  Version: @VERSION@
+# -Libs: -L${libdir} -lsflow
+# +Libs: -L${libdir} -lnoiro_sflow
+#  Libs.private: @LIBS@
+#  Cflags: -I${includedir}/openvswitch
+
+
+# diff --git a/ofproto/automake.mk b/ofproto/automake.mk
+# index 7c08b56..5ae1730 100644
+# --- a/ofproto/automake.mk
+# +++ b/ofproto/automake.mk
+# @@ -5,8 +5,12 @@
+#  # notice and this notice are preserved.  This file is offered as-is,
+#  # without warranty of any kind.
+
+# -lib_LTLIBRARIES += ofproto/libofproto.la
+# -ofproto_libofproto_la_LDFLAGS = \
+# +noinst_LTLIBRARIES += ofproto/libofproto.la
+# +lib_LTLIBRARIES += ofproto/libnoiro_ofproto.la
+# +ofproto_libnoiro_ofproto_la_SOURCES =
+# +ofproto_libnoiro_ofproto_la_LIBADD = ofproto/libofproto.la
+# +
+# +ofproto_libnoiro_ofproto_la_LDFLAGS = \
+#          $(OVS_LTINFO) \
+#          -Wl,--version-script=$(top_builddir)/ofproto/libofproto.sym \
+#          $(AM_LDFLAGS)
+
+
+# diff --git a/ofproto/libofproto.pc.in b/ofproto/libofproto.pc.in
+# index 2740712..7a80266 100644
+# --- a/ofproto/libofproto.pc.in
+# +++ b/ofproto/libofproto.pc.in
+# @@ -6,6 +6,6 @@ includedir=@includedir@
+#  Name: libofproto
+#  Description: OpenFlow library of Open vSwitch
+#  Version: @VERSION@
+# -Libs: -L${libdir} -lofproto
+# +Libs: -L${libdir} -lnoiro_ofproto
+#  Libs.private: @LIBS@
+#  Cflags: -I${includedir}/openvswitch
+
+
+# diff --git a/ovsdb/automake.mk b/ovsdb/automake.mk
+# index b895f42..594b422 100644
+# --- a/ovsdb/automake.mk
+# +++ b/ovsdb/automake.mk
+# @@ -59,7 +59,7 @@ MAN_FRAGMENTS += ovsdb/ovsdb-schemas.man
+#  # ovsdb-tool
+#  bin_PROGRAMS += ovsdb/ovsdb-tool
+#  ovsdb_ovsdb_tool_SOURCES = ovsdb/ovsdb-tool.c
+# -ovsdb_ovsdb_tool_LDADD = ovsdb/libovsdb.la lib/libopenvswitch.la
+# +ovsdb_ovsdb_tool_LDADD = ovsdb/libovsdb.la lib/libnoiro_openvswitch.la
+#  # ovsdb-tool.1
+#  man_MANS += ovsdb/ovsdb-tool.1
+#  CLEANFILES += ovsdb/ovsdb-tool.1
+# @@ -68,7 +68,7 @@ MAN_ROOTS += ovsdb/ovsdb-tool.1.in
+#  # ovsdb-client
+#  bin_PROGRAMS += ovsdb/ovsdb-client
+#  ovsdb_ovsdb_client_SOURCES = ovsdb/ovsdb-client.c
+# -ovsdb_ovsdb_client_LDADD = ovsdb/libovsdb.la lib/libopenvswitch.la
+# +ovsdb_ovsdb_client_LDADD = ovsdb/libovsdb.la lib/libnoiro_openvswitch.la
+#  # ovsdb-client.1
+#  man_MANS += ovsdb/ovsdb-client.1
+#  CLEANFILES += ovsdb/ovsdb-client.1
+# @@ -77,7 +77,7 @@ MAN_ROOTS += ovsdb/ovsdb-client.1.in
+#  # ovsdb-server
+#  sbin_PROGRAMS += ovsdb/ovsdb-server
+#  ovsdb_ovsdb_server_SOURCES = ovsdb/ovsdb-server.c
+# -ovsdb_ovsdb_server_LDADD = ovsdb/libovsdb.la lib/libopenvswitch.la
+# +ovsdb_ovsdb_server_LDADD = ovsdb/libovsdb.la lib/libnoiro_openvswitch.la
+#  # ovsdb-server.1
+#  man_MANS += ovsdb/ovsdb-server.1
+#  CLEANFILES += ovsdb/ovsdb-server.1
+
+
+# diff --git a/vtep/automake.mk b/vtep/automake.mk
+# index 0f313dc..e350fbf 100644
+# --- a/vtep/automake.mk
+# +++ b/vtep/automake.mk
+# @@ -34,7 +34,7 @@ man_MANS += \
+#     vtep/vtep-ctl.8
+
+#  vtep_vtep_ctl_SOURCES = vtep/vtep-ctl.c
+# -vtep_vtep_ctl_LDADD = vtep/libvtep.la lib/libopenvswitch.la
+# +vtep_vtep_ctl_LDADD = vtep/libvtep.la lib/libnoiro_openvswitch.la
+
+#  # ovs-vtep
+#  scripts_SCRIPTS += \
+
+# ------------------------
+# Commented out OVN changes (preserved for reference)
+# ------------------------
+
+# diff --git a/ovn/controller/automake.mk b/ovn/controller/automake.mk
+# --- a/ovn/controller/automake.mk
+# +++ b/ovn/controller/automake.mk
+# -ovn_controller_ovn_controller_LDADD = ovn/lib/libovn.la lib/libopenvswitch.la
+# +ovn_controller_ovn_controller_LDADD = ovn/lib/libovn.la lib/libnoiro_openvswitch.la
+
+# diff --git a/ovn/controller-vtep/automake.mk b/ovn/controller-vtep/automake.mk
+# -ovn_controller_vtep_ovn_controller_vtep_LDADD = ovn/lib/libovn.la lib/libopenvswitch.la vtep/libvtep.la
+# +ovn_controller_vtep_ovn_controller_vtep_LDADD = ovn/lib/libovn.la lib/libnoiro_openvswitch.la vtep/libvtep.la
+
+# diff --git a/ovn/northd/automake.mk b/ovn/northd/automake.mk
+# -ovn_northd_ovn_northd_LDADD = ovn/lib/libovn.la ovsdb/libovsdb.la lib/libopenvswitch.la
+# +ovn_northd_ovn_northd_LDADD = ovn/lib/libovn.la ovsdb/libovsdb.la lib/libnoiro_openvswitch.la
+
+# diff --git a/ovn/utilities/automake.mk b/ovn/utilities/automake.mk
+# -ovn_utilities_ovn_nbctl_LDADD = ovn/lib/libovn.la ovsdb/libovsdb.la lib/libopenvswitch.la
+# +ovn_utilities_ovn_nbctl_LDADD = ovn/lib/libovn.la ovsdb/libovsdb.la lib/libnoiro_openvswitch.la
+# -ovn_utilities_ovn_sbctl_LDADD = ovn/lib/libovn.la ovsdb/libovsdb.la lib/libopenvswitch.la
+# +ovn_utilities_ovn_sbctl_LDADD = ovn/lib/libovn.la ovsdb/libovsdb.la lib/libnoiro_openvswitch.la
+# -ovn_utilities_ovn_trace_LDADD = ovn/lib/libovn.la ovsdb/libovsdb.la lib/libopenvswitch.la
+# +ovn_utilities_ovn_trace_LDADD = ovn/lib/libovn.la ovsdb/libovsdb.la lib/libnoiro_openvswitch.la
+
+
+ 
+diff --git a/Makefile.am b/Makefile.am
+index 691a005ad..64e64ca12 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -363,19 +363,6 @@ check-ifconfig:
+ 	fi
+ .PHONY: check-ifconfig
+ 
+-if HAVE_GROFF
+-ALL_LOCAL += manpage-check
+-manpage-check: $(man_MANS) $(dist_man_MANS) $(noinst_man_MANS)
+-	@error=false; \
+-	for manpage in $?; do \
+-	  LANG=en_US.UTF-8 groff -w mac -w delim -w escape -w input -w missing -w tab -T utf8 -man -p -z $$manpage >$@.tmp 2>&1; \
+-	  if grep warning: $@.tmp; then error=:; fi; \
+-	  rm -f $@.tmp; \
+-	done; \
+-	if $$error; then exit 1; else touch $@; fi
+-	$(AM_V_GEN) touch -c $@
+-CLEANFILES += manpage-check
+-endif
+ 
+ if HAVE_FLAKE8
+ ALL_LOCAL += flake8-check
+diff --git a/lib/automake.mk b/lib/automake.mk
+index 39afbff9d..e96253878 100644
+--- a/lib/automake.mk
++++ b/lib/automake.mk
+@@ -5,7 +5,10 @@
+ # notice and this notice are preserved.  This file is offered as-is,
+ # without warranty of any kind.
+ 
+-lib_LTLIBRARIES += lib/libopenvswitch.la
++noinst_LTLIBRARIES += lib/libopenvswitch.la
++lib_LTLIBRARIES += lib/libnoiro_openvswitch.la
++lib_libnoiro_openvswitch_la_SOURCES =
++lib_libnoiro_openvswitch_la_LIBADD = lib/libopenvswitch.la
+ 
+ lib_libopenvswitch_la_LIBADD = $(SSL_LIBS)
+ lib_libopenvswitch_la_LIBADD += $(CAPNG_LDADD)
+@@ -16,7 +19,7 @@ if WIN32
+ lib_libopenvswitch_la_LIBADD += ${PTHREAD_LIBS}
+ endif
+ 
+-lib_libopenvswitch_la_LDFLAGS = \
++lib_libnoiro_openvswitch_la_LDFLAGS = \
+         $(OVS_LTINFO) \
+         -Wl,--version-script=$(top_builddir)/lib/libopenvswitch.sym \
+         $(AM_LDFLAGS)
+@@ -401,8 +404,11 @@ nodist_lib_libopenvswitch_la_SOURCES = \
+ 	lib/vswitch-idl.h
+ CLEANFILES += $(nodist_lib_libopenvswitch_la_SOURCES)
+ 
+-lib_LTLIBRARIES += lib/libsflow.la
+-lib_libsflow_la_LDFLAGS = \
++noinst_LTLIBRARIES += lib/libsflow.la
++lib_LTLIBRARIES += lib/libnoiro_sflow.la
++lib_libnoiro_sflow_la_SOURCES =
++lib_libnoiro_sflow_la_LIBADD = lib/libsflow.la
++lib_libnoiro_sflow_la_LDFLAGS = \
+         $(OVS_LTINFO) \
+         -Wl,--version-script=$(top_builddir)/lib/libsflow.sym \
+         $(AM_LDFLAGS)
+diff --git a/lib/libopenvswitch.pc.in b/lib/libopenvswitch.pc.in
+index 2a3f2ca7b..5a0eca476 100644
+--- a/lib/libopenvswitch.pc.in
++++ b/lib/libopenvswitch.pc.in
+@@ -6,6 +6,6 @@ includedir=@includedir@
+ Name: libopenvswitch
+ Description: Open vSwitch library
+ Version: @VERSION@
+-Libs: -L${libdir} -lopenvswitch
++Libs: -L${libdir} -lnoiro_openvswitch
+ Libs.private: @LIBS@
+ Cflags: -I${includedir}/openvswitch
+diff --git a/lib/libsflow.pc.in b/lib/libsflow.pc.in
+index e70a2b704..6f731644d 100644
+--- a/lib/libsflow.pc.in
++++ b/lib/libsflow.pc.in
+@@ -3,9 +3,9 @@ exec_prefix=@exec_prefix@
+ libdir=@libdir@
+ includedir=@includedir@
+ 
+-Name: libofproto
++Name: libsflow
+ Description: sFlow library of Open vSwitch
+ Version: @VERSION@
+-Libs: -L${libdir} -lsflow
++Libs: -L${libdir} -lnoiro_sflow
+ Libs.private: @LIBS@
+ Cflags: -I${includedir}/openvswitch
+diff --git a/ofproto/automake.mk b/ofproto/automake.mk
+index 7c08b563b..5ae173002 100644
+--- a/ofproto/automake.mk
++++ b/ofproto/automake.mk
+@@ -5,8 +5,12 @@
+ # notice and this notice are preserved.  This file is offered as-is,
+ # without warranty of any kind.
+ 
+-lib_LTLIBRARIES += ofproto/libofproto.la
+-ofproto_libofproto_la_LDFLAGS = \
++noinst_LTLIBRARIES += ofproto/libofproto.la
++lib_LTLIBRARIES += ofproto/libnoiro_ofproto.la
++ofproto_libnoiro_ofproto_la_SOURCES =
++ofproto_libnoiro_ofproto_la_LIBADD = ofproto/libofproto.la
++
++ofproto_libnoiro_ofproto_la_LDFLAGS = \
+         $(OVS_LTINFO) \
+         -Wl,--version-script=$(top_builddir)/ofproto/libofproto.sym \
+         $(AM_LDFLAGS)
+diff --git a/ofproto/libofproto.pc.in b/ofproto/libofproto.pc.in
+index 274071250..7a802666b 100644
+--- a/ofproto/libofproto.pc.in
++++ b/ofproto/libofproto.pc.in
+@@ -6,6 +6,6 @@ includedir=@includedir@
+ Name: libofproto
+ Description: OpenFlow library of Open vSwitch
+ Version: @VERSION@
+-Libs: -L${libdir} -lofproto
++Libs: -L${libdir} -lnoiro_ofproto
+ Libs.private: @LIBS@
+ Cflags: -I${includedir}/openvswitch
+diff --git a/ovsdb/automake.mk b/ovsdb/automake.mk
+index 446d6c136..1f04f1c27 100644
+--- a/ovsdb/automake.mk
++++ b/ovsdb/automake.mk
+@@ -59,7 +59,7 @@ MAN_FRAGMENTS += ovsdb/ovsdb-schemas.man
+ # ovsdb-tool
+ bin_PROGRAMS += ovsdb/ovsdb-tool
+ ovsdb_ovsdb_tool_SOURCES = ovsdb/ovsdb-tool.c
+-ovsdb_ovsdb_tool_LDADD = ovsdb/libovsdb.la lib/libopenvswitch.la
++ovsdb_ovsdb_tool_LDADD = ovsdb/libovsdb.la lib/libnoiro_openvswitch.la
+ # ovsdb-tool.1
+ man_MANS += ovsdb/ovsdb-tool.1
+ CLEANFILES += ovsdb/ovsdb-tool.1
+@@ -68,7 +68,7 @@ MAN_ROOTS += ovsdb/ovsdb-tool.1.in
+ # ovsdb-client
+ bin_PROGRAMS += ovsdb/ovsdb-client
+ ovsdb_ovsdb_client_SOURCES = ovsdb/ovsdb-client.c
+-ovsdb_ovsdb_client_LDADD = ovsdb/libovsdb.la lib/libopenvswitch.la
++ovsdb_ovsdb_client_LDADD = ovsdb/libovsdb.la lib/libnoiro_openvswitch.la
+ # ovsdb-client.1
+ man_MANS += ovsdb/ovsdb-client.1
+ CLEANFILES += ovsdb/ovsdb-client.1
+@@ -77,7 +77,7 @@ MAN_ROOTS += ovsdb/ovsdb-client.1.in
+ # ovsdb-server
+ sbin_PROGRAMS += ovsdb/ovsdb-server
+ ovsdb_ovsdb_server_SOURCES = ovsdb/ovsdb-server.c
+-ovsdb_ovsdb_server_LDADD = ovsdb/libovsdb.la lib/libopenvswitch.la
++ovsdb_ovsdb_server_LDADD = ovsdb/libovsdb.la lib/libnoiro_openvswitch.la
+ # ovsdb-server.1
+ man_MANS += ovsdb/ovsdb-server.1
+ CLEANFILES += ovsdb/ovsdb-server.1
+diff --git a/tests/automake.mk b/tests/automake.mk
+index 677b99a6b..e76de1451 100644
+--- a/tests/automake.mk
++++ b/tests/automake.mk
+@@ -420,12 +420,12 @@ $(srcdir)/package.m4: $(top_srcdir)/configure.ac
+ noinst_PROGRAMS += tests/test-ovsdb
+ tests_test_ovsdb_SOURCES = tests/test-ovsdb.c
+ nodist_tests_test_ovsdb_SOURCES = tests/idltest.c tests/idltest.h
+-tests_test_ovsdb_LDADD = ovsdb/libovsdb.la lib/libopenvswitch.la
++tests_test_ovsdb_LDADD = ovsdb/libovsdb.la lib/libnoiro_openvswitch.la
+ 
+ noinst_PROGRAMS += tests/test-lib
+ tests_test_lib_SOURCES = \
+ 	tests/test-lib.c
+-tests_test_lib_LDADD = lib/libopenvswitch.la
++tests_test_lib_LDADD = lib/libnoiro_openvswitch.la
+ 
+ # idltest schema and IDL
+ OVSIDL_BUILT += tests/idltest.c tests/idltest.h tests/idltest.ovsidl
+@@ -490,11 +490,11 @@ tests_ovstest_SOURCES += \
+ 	tests/test-netlink-conntrack.c
+ endif
+ 
+-tests_ovstest_LDADD = lib/libopenvswitch.la
++tests_ovstest_LDADD = lib/libnoiro_openvswitch.la
+ 
+ noinst_PROGRAMS += tests/test-stream
+ tests_test_stream_SOURCES = tests/test-stream.c
+-tests_test_stream_LDADD = lib/libopenvswitch.la
++tests_test_stream_LDADD = lib/libnoiro_openvswitch.la
+ 
+ noinst_PROGRAMS += tests/test-strtok_r
+ tests_test_strtok_r_SOURCES = tests/test-strtok_r.c
+diff --git a/utilities/automake.mk b/utilities/automake.mk
+index e2e22c39a..5ebc54c08 100644
+--- a/utilities/automake.mk
++++ b/utilities/automake.mk
+@@ -102,26 +102,26 @@ man_MANS += \
+ 	utilities/ovs-vsctl.8
+ 
+ utilities_ovs_appctl_SOURCES = utilities/ovs-appctl.c
+-utilities_ovs_appctl_LDADD = lib/libopenvswitch.la
++utilities_ovs_appctl_LDADD = lib/libnoiro_openvswitch.la
+ 
+ utilities_ovs_testcontroller_SOURCES = utilities/ovs-testcontroller.c
+-utilities_ovs_testcontroller_LDADD = lib/libopenvswitch.la $(SSL_LIBS)
++utilities_ovs_testcontroller_LDADD = lib/libnoiro_openvswitch.la $(SSL_LIBS)
+ 
+ utilities_ovs_dpctl_SOURCES = utilities/ovs-dpctl.c
+-utilities_ovs_dpctl_LDADD = lib/libopenvswitch.la
++utilities_ovs_dpctl_LDADD = lib/libnoiro_openvswitch.la
+ 
+ utilities_ovs_ofctl_SOURCES = utilities/ovs-ofctl.c
+ utilities_ovs_ofctl_LDADD = \
+ 	ofproto/libofproto.la \
+-	lib/libopenvswitch.la
++	lib/libnoiro_openvswitch.la
+ 
+ utilities_ovs_vsctl_SOURCES = utilities/ovs-vsctl.c
+-utilities_ovs_vsctl_LDADD = lib/libopenvswitch.la
++utilities_ovs_vsctl_LDADD = lib/libnoiro_openvswitch.la
+ 
+ if LINUX
+ noinst_PROGRAMS += utilities/nlmon
+ utilities_nlmon_SOURCES = utilities/nlmon.c
+-utilities_nlmon_LDADD = lib/libopenvswitch.la
++utilities_nlmon_LDADD = lib/libnoiro_openvswitch.la
+ endif
+ 
+ FLAKE8_PYFILES += utilities/ovs-pcap.in \
+diff --git a/vtep/automake.mk b/vtep/automake.mk
+index e549922d9..f6ca3505e 100644
+--- a/vtep/automake.mk
++++ b/vtep/automake.mk
+@@ -34,7 +34,7 @@ man_MANS += \
+    vtep/vtep-ctl.8
+ 
+ vtep_vtep_ctl_SOURCES = vtep/vtep-ctl.c
+-vtep_vtep_ctl_LDADD = vtep/libvtep.la lib/libopenvswitch.la
++vtep_vtep_ctl_LDADD = vtep/libvtep.la lib/libnoiro_openvswitch.la
+ 
+ # ovs-vtep
+ scripts_SCRIPTS += \
